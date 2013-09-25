@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+
+    "name": "Analytics Preview",
+    "version": "0.1",
+    "description": "High level page specific analytics overview.",
+
+    // http://developer.chrome.com/extensions/pageAction.html
+    "browser_action": {
+        "default_icon": {
+            "19": "icon.png",
+            "38": "icon.png"
+        },
+        "default_title": "Page Analytics",
+        "default_popup": "popup.html"
+    },
+
+    // http://developer.chrome.com/extensions/background_pages.html
+    /*"background": {
+        "scripts": ["background.js"]
+    }*/
+
+    "permissions": [
+        "http://*.google.com/",
+        "https://*.google.com/"
+    ]
+}
