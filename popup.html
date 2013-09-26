@@ -5,25 +5,65 @@
     <title>Untitled Document</title>
     <style>
         #app {
-            min-width: 300px;
+            font: 14px/16px Arial;
+            margin: 1em;
+            min-width: 200px;
+        }
+        #app header {
+            border-bottom: 1px dashed #AAA;
+            margin: 0 0 10px;
+            padding: 0 0 10px;
+        }
+        #app header h1,
+        #app header h2 {
+            font-size: 14px;
+            font-style: italic;
+            line-height: 16px;
+            margin: 0;
+            padding: 0;
+        }
+        #analytics-overview {
+            margin: 0 0 0 20px;
+            padding: 0;
+        }
+        #analytics-overview li {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        #authorize-button {
+            background-color: green;
+            border: none;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 30px 0 0 0;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
 
 <body id="app">
-    <h1>Popup Page</h1>
-    <div id="analytics-overview">
-        <h1>GA Profile Name</h1>
-        <ul>
-            <li>PageViews: 0000</li>
-            <li>BounceRate: 00.0%</li>
-        </ul>
-    </div>
+    <header>
+        <h1>
+            <select name="webPropertyId" id="webPropertyId">
+                <option value="">Web Property</option>
+            </select>
+        </h1>
+        <!-- <h2 id="profileName">Profile Name</h2> -->
+    </header>
 
-    <!-- <button id="authorize-button" style="visibility: hidden">Authorize</button> -->
+    <ul id="analytics-overview">
+        <!-- <li>PageViews: <span id="pageViews"></span></li>
+        <li>Bounces: <span id="bounces"></span></li>
+        <li>Page LoadTime: <span id="pageLoadTime"></span></li> -->
+        No data
+    </ul>
+
+    <button id="authorize-button" style="display: none">Authorize</button>
 
 <script src="popup.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=init"></script>
 
 </body>
 </html>

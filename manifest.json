@@ -5,23 +5,43 @@
     "version": "0.1",
     "description": "High level page specific analytics overview.",
 
-    // http://developer.chrome.com/extensions/pageAction.html
-    "browser_action": {
+    // http://developer.chrome.com/extensions/browserAction.html
+    /*"browser_action": {
         "default_icon": {
             "19": "icon.png",
             "38": "icon.png"
         },
         "default_title": "Page Analytics",
         "default_popup": "popup.html"
+    },*/
+
+    // http://developer.chrome.com/extensions/pageAction.html
+    "page_action": {
+        "default_icon": "icon.png",
+        "default_title": "Page Analytics",
+        "default_popup": "popup.html"
     },
 
     // http://developer.chrome.com/extensions/background_pages.html
-    /*"background": {
-        "scripts": ["background.js"]
-    }*/
+    "background": {
+/*        "scripts": [
+            "config.js",
+            "background.js"
+        ]*/
+        "page": "background.html"
+    },
 
     "permissions": [
+        "tabs",
+        "activeTab",
         "http://*.google.com/",
-        "https://*.google.com/"
-    ]
+        "https://*.google.com/",
+        "identity"
+    ],
+
+    // http://developer.chrome.com/extensions/contentSecurityPolicy.html#H3-1
+    "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
+
+    // http://developer.chrome.com/apps/app_identity.html#non
+
 }
