@@ -8,6 +8,8 @@
 
 var bgPage = chrome.extension.getBackgroundPage();
 
+
+
 if (!bgPage.ext.auth) {
     var authorizeButton = document.getElementById('authorize-button');
     authorizeButton.style.display = 'block';

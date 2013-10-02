@@ -88,14 +88,23 @@
 
     <header>
         <h1>Page Level Metrics</h1>
+        <small>* Last 30 days</small>
     </header>
 
     <section>
 
-        <label for="webPropertyId">Profile</label>
-        <select name="webPropertyId" id="webPropertyId">
-            <option value="">Web Property</option>
-        </select>
+        <label for="webPropertyId">
+            <span class="title">Profile</span>
+            <select name="webPropertyId" id="webPropertyId">
+                <option value="">Web Property</option>
+            </select>
+        </label>
+
+        <!-- <label for="startDate">
+            <span class="title">Select Date Range:</span>
+            <input type="date" name="from" id="startDate">
+            <input type="date" name="to" id="endDate">
+        </label> -->
 
         <div id="seo">
             <h2>SEO Metrics:</h2>

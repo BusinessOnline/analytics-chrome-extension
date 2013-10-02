@@ -73,20 +73,25 @@ var ext = {
         });
     },
     queryReporting: function (profile, metrics, dimensions, callback) {
+
+        // Defaults to last 30 days
+        var today = new Date();
+        var endDate = today.toISOString().split('T');
+        var past = new Date(today.setDate(today.getDate() - 30));
+        var startDate = past.toISOString().split('T');
+
         gapi.client.analytics.data.ga.get({
             'ids': profile,
-            'start-date': "2013-07-01",
-            'end-date': "2013-07-28",
+            'start-date': startDate[0],
+            'end-date': endDate[0],
             'metrics': metrics,
             'dimensions': dimensions
         }).execute(function (resp) {
             callback(resp);
         });
-    },
-    profileChange: function () {
-        //
     }
 };
+
 
 function init () {
     console.log('Extension Init');
@@ -139,5 +144,3 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     }
 }
 
-// Listen for any changes to the URL of any tab.
-chrome.tabs.onUpdated.addListener(checkForValidUrl);
