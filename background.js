@@ -12,6 +12,7 @@
 
 var ext = {
     auth: {},
+    debug: true,
     resp: {},
     profiles: [],
     profileNameOptions: "",
@@ -69,10 +70,19 @@ var ext = {
             'ids': profile,
             'metrics': metrics
         }).execute(function(resp){
-            console.log(resp);
+            //console.log(resp);
         });
     },
     queryReporting: function (profile, metrics, dimensions, callback) {
+
+        if(ext.debug) {
+            console.log('queryReporting: Parameters');
+            console.log(profile);
+            console.log(metrics);
+            console.log(dimensions);
+            console.log(callback);
+            console.log('==============================');
+        }
 
         // Defaults to last 30 days
         var today = new Date();
@@ -87,8 +97,14 @@ var ext = {
             'metrics': metrics,
             'dimensions': dimensions
         }).execute(function (resp) {
+            if(ext.debug) {
+                console.log('queryReporting: Response');
+                console.log(resp);
+                console.log('==============================');
+            }
             callback(resp);
         });
+
     }
 };
 
@@ -144,3 +160,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     }
 }
 
+
+
+// Listen for any changes to the URL of any tab.
+chrome.tabs.onUpdated.addListener(checkForValidUrl);

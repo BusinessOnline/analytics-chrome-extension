@@ -51,7 +51,7 @@ function loadProfile (id, l) {
 
 
 function matchPath (data, l) {
-    console.log(data);
+    //console.log(data);
     var path = l.pathname;
     for (var i = 0; i < data.rows.length; i++) {
         if (path === data.rows[i][0]) {
@@ -62,17 +62,30 @@ function matchPath (data, l) {
 
 
 function displayMetrics (headers, data) {
+
+    if(bgPage.ext.debug) {
+        console.log('displayMetrics: Parameters');
+        console.log(headers);
+        console.log(data);
+        console.log('==============================');
+    }
+
     // Profile info
     //document.getElementById('webPropertyId').innerHTML = data.profileInfo.webPropertyId;
     //document.getElementById('profileName').innerHTML = data.profileInfo.profileName;
 
     var pageViews = data[1];
-    var bounceRate = Math.round((data[2] / data[3]) * 100) /100;
+    var bounceRate = function() {
+        if(!data[3] === 0) {
+            return Math.round((data[2] / data[3]) * 100) / 100;
+        }
+        return 0;
+    }
     var avgTimeOnPage = Math.round(data[4] * 100) / 100;
 
     // Metrics
     var html = "<li class='metric'><span class='title'>Page Views: </span>"+pageViews+"</li>" +
-                     "<li class='metric'><span class='title'>Bounce Rate: </span>"+bounceRate+"%</li>" +
+                     "<li class='metric'><span class='title'>Bounce Rate: </span>"+bounceRate()+"%</li>" +
                      "<li class='metric'><span class='title'>Avg. Time on Page: </span>"+avgTimeOnPage+" seconds</li>";
     document.getElementById('seo-metrics').innerHTML = html;
 }
