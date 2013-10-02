@@ -5,23 +5,16 @@
  *
  * Google Analytics JavaScript API
  * @required https://code.google.com/p/google-api-javascript-client/
- * @see https://developers.google.com/api-client-library/javascript/
- * @see https://developers.google.com/api-client-library/javascript/reference/referencedocs
- * @see https://code.google.com/apis/console
- * @see https://developers.google.com/apis-explorer/
  *
  * Chrome Extensions
  * @see  http://developer.chrome.com/extensions/getstarted.html
  */
-
-//console.log('background.js');
 
 var ext = {
     auth: {},
     resp: {},
     profiles: [],
     profileNameOptions: "",
-    lastIdMatch: 0,
     /**
      * [checkAuth Check if user has been authorized]
      * @param  {Function} callback Code to fire after authorization
@@ -30,40 +23,22 @@ var ext = {
     checkAuth: function (callback) {
         gapi.auth.authorize({client_id: config.clientId, scope: config.scope, immediate: true}, function (auth) {
             ext.loadClient(auth, callback);
-            //ext.auth = auth;
         });
     },
     loadClient: function (auth, callback) {
         if (auth) {
-            console.log("Authed");
             ext.auth = auth;
-
             gapi.auth.setToken(auth);
             gapi.client.load('analytics', 'v3', function () {
-
-                //ToDo: think I need to use a popup view: http://developer.chrome.com/extensions/extension.html#method-getViews
-
-                //var authorizeButton = document.getElementById('authorize-button');
-                //authorizeButton.style.visibility = 'hidden';
                 callback(auth);
             });
 
         } else {
-            console.log('not authed');
             ext.auth = false;
-
-            //var authorizeButton = document.getElementById('authorize-button');
-            //authorizeButton.style.visibility = '';
-            //authorizeButton.onclick = ext.authClick(callback);
-            //var views = chrome.extension.getViews({type:"popup"});
-            //console.log(views);
         }
     },
     authClick: function (callback) {
-        gapi.auth.authorize({client_id: config.clientId, scope: config.scope, immediate:  false}, function (auth) {
-            ext.loadClient(auth, callback);
-        });
-        //return false;
+        gapi.auth.authorize({client_id: config.clientId, scope: config.scope, immediate:  false}, ext.loadClient);
     },
     getAccounts: function (callback) {
         gapi.client.analytics.management.accounts.list().execute(function(resp) {
@@ -98,7 +73,6 @@ var ext = {
         });
     },
     queryReporting: function (profile, metrics, dimensions, callback) {
-        //console.log('running query');
         gapi.client.analytics.data.ga.get({
             'ids': profile,
             'start-date': "2013-07-01",
@@ -106,8 +80,6 @@ var ext = {
             'metrics': metrics,
             'dimensions': dimensions
         }).execute(function (resp) {
-            //console.log(resp);
-            //ext.resp = resp;
             callback(resp);
         });
     },
@@ -136,11 +108,14 @@ function init () {
 
 // Called when the url of a tab changes.
 function checkForValidUrl(tabId, changeInfo, tab) {
-    ext.profileNameOptions = "";
-    //console.log(chrome.extension.getViews({type: "popup"}));
 
-    //var profileNameOptions;
-    //var lastIdMatch;
+    //Show page action if not authed
+    if (!ext.auth) {
+        chrome.pageAction.show(tabId);
+    }
+
+    // Reset
+    ext.profileNameOptions = "";
 
     // Iterate Profiles
     for (var a = 0, b = ext.profiles.length; a < b; a++) {
@@ -157,8 +132,6 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 
                     // Store on Ext object
                     ext.profileNameOptions += "<option value="+ext.profiles[a].items[x].id+">"+ext.profiles[a].items[x].name+"</option>";
-                    ext.lastIdMatch = ext.profiles[a].items[x].id;
-
                 }
 
             }
@@ -168,4 +141,3 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 
 // Listen for any changes to the URL of any tab.
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
-

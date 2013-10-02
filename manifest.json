@@ -35,8 +35,7 @@
         "tabs",
         "activeTab",
         "http://*.google.com/",
-        "https://*.google.com/",
-        "identity"
+        "https://*.google.com/"
     ],
 
     // http://developer.chrome.com/extensions/contentSecurityPolicy.html#H3-1

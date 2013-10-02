@@ -2,34 +2,63 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Untitled Document</title>
+    <title>BusinessOnline: Page Level Metrics</title>
     <style>
         #app {
             font: 14px/16px Arial;
-            margin: 1em;
-            min-width: 200px;
+            color: #444;
+            margin: 0;
+            min-width: 250px;
+            padding: 0
         }
         #app header {
             border-bottom: 1px dashed #AAA;
-            margin: 0 0 10px;
-            padding: 0 0 10px;
+            margin: 0 0 10px 0;
+            padding: 10px;
         }
-        #app header h1,
-        #app header h2 {
+        #app header h1 {
             font-size: 14px;
-            font-style: italic;
             line-height: 16px;
             margin: 0;
             padding: 0;
         }
-        #analytics-overview {
-            margin: 0 0 0 20px;
+
+        #app section {
+            margin: 0 15px;
+            padding: 10px 0;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        #webPropertyId {
+            margin: 0;
             padding: 0;
         }
-        #analytics-overview li {
-            margin: 5px 0;
-            font-size: 16px;
+
+        #seo {
+            margin: 0;
+            padding: 15px 0 5px;
         }
+        #seo h2 {
+            font-size: 14px;
+        }
+        #seo-metrics {
+            margin: 0 0 0 18px;
+            padding: 0;
+        }
+        #seo .metric {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: 900;
+        }
+        #seo .metric .title {
+            font-size: 14px;
+            font-style: italic;
+            font-weight: 500;
+        }
+
         #authorize-button {
             background-color: green;
             border: none;
@@ -41,28 +70,49 @@
             text-align: center;
             width: 100%;
         }
+
+        footer {
+            background-color: #EEE;
+            font-size: 12px;
+            margin: 5px 0 0 0;
+            padding: 0 5px;
+            width: 100%;
+        }
+        footer a {
+            color: #333;
+        }
+
     </style>
 </head>
-
 <body id="app">
+
     <header>
-        <h1>
-            <select name="webPropertyId" id="webPropertyId">
-                <option value="">Web Property</option>
-            </select>
-        </h1>
-        <!-- <h2 id="profileName">Profile Name</h2> -->
+        <h1>Page Level Metrics</h1>
     </header>
 
-    <ul id="analytics-overview">
-        <!-- <li>PageViews: <span id="pageViews"></span></li>
-        <li>Bounces: <span id="bounces"></span></li>
-        <li>Page LoadTime: <span id="pageLoadTime"></span></li> -->
-        No data
-    </ul>
+    <section>
 
-    <button id="authorize-button" style="display: none">Authorize</button>
+        <label for="webPropertyId">Profile</label>
+        <select name="webPropertyId" id="webPropertyId">
+            <option value="">Web Property</option>
+        </select>
 
+        <div id="seo">
+            <h2>SEO Metrics:</h2>
+            <ul id="seo-metrics">
+                No data
+            </ul>
+        </div>
+
+        <button id="authorize-button" style="display: none">Authorize</button>
+    </section>
+
+    <footer>
+        <small>&copy; 2013 <a href="http://businessol.com">BusinessOnline</a></small>
+    </footer>
+
+
+<script src="zepto.min.js"></script>
 <script src="popup.js"></script>
 
 </body>
