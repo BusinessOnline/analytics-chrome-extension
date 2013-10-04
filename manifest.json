@@ -1,34 +1,24 @@
 {
-    "manifest_version": 2,
-
-    "name": "Analytics Preview",
-    "version": "0.0.3",
-    "description": "A marketing tool for getting a quick health check of a url with in one of your Google Analytics accounts. Displays basic page analytics, SEO and PPC metrics.",
-
-    // http://developer.chrome.com/extensions/pageAction.html
-    "page_action": {
-        "default_icon": {
-            "19": "icon_19.png",
-            "38": "icon_38.png"
-        },
-        "default_title": "Page Analytics",
-        "default_popup": "popup.html"
-    },
-
-    // http://developer.chrome.com/extensions/background_pages.html
-    "background": {
-        "page": "background.html"
-    },
-
-    "permissions": [
-        "tabs",
-        "activeTab",
-        "http://*.google.com/",
-        "https://*.google.com/"
-    ],
-
-    // http://developer.chrome.com/extensions/contentSecurityPolicy.html#H3-1
-    "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
-
-    // http://developer.chrome.com/apps/app_identity.html#non
+"manifest_version": 2,
+"name": "Analytics Preview",
+"version": "0.0.3",
+"description": "Marketing tool that shows a health check of the current url. Shows basic page analytics, SEO and PPC metrics.",
+"page_action": {
+"default_icon": {
+"19": "icon_19.png",
+"38": "icon_38.png"
+},
+"default_title": "Page Analytics",
+"default_popup": "popup.html"
+},
+"background": {
+"page": "background.html"
+},
+"permissions": [
+"tabs",
+"activeTab",
+"http://*.google.com/",
+"https://*.google.com/"
+],
+"content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
 }
