@@ -17,6 +17,7 @@
 "permissions": [
 "tabs",
 "activeTab",
+"identity",
 "http://*.google.com/",
 "https://*.google.com/"
 ],

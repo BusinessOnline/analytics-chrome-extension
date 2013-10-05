@@ -24,7 +24,12 @@ var ext = {
      */
     checkAuth: function (callback) {
         if(ext.debug) {ext.logArgs([Array.prototype.slice.call(arguments)], 'Background->checkAuth: Parameters');}
-        gapi.auth.authorize({client_id: config.clientId, scope: config.scope, immediate: true}, function (auth) {
+
+        gapi.auth.authorize({
+            client_id: config.clientId,
+            scope: config.scope,
+            immediate: true
+        }, function (auth) {
             ext.loadClient(auth, callback);
         });
     },
@@ -37,6 +42,7 @@ var ext = {
      */
     loadClient: function (auth, callback) {
         if(ext.debug) {ext.logArgs([Array.prototype.slice.call(arguments)], 'Background->loadClient: Parameters');}
+
         if (auth) {
             ext.auth = auth;
             gapi.auth.setToken(auth);
@@ -179,7 +185,7 @@ var ext = {
 };
 
 
-function init () {
+function gapiIsLoaded () {
     console.log('Extension Init');
     gapi.client.setApiKey(config.apiKey);
     ext.checkAuth(function (auth) {
@@ -226,7 +232,6 @@ function checkForValidUrl(tabId, changeInfo, tab) {
         }
     }
 }
-
 
 
 // Listen for any changes to the URL of any tab.
