@@ -1,9 +1,12 @@
-Marketing Health Check
+SEO Page Metrics
 ==========================
 
 A marketing tool for getting a quick health check of a url with in one of your Google Analytics accounts. Displays basic page analytics, SEO and PPC metrics.
 
+[https://chrome.google.com/webstore/detail/seo-page-metrics/](https://chrome.google.com/webstore/detail/seo-page-metrics/iacadekapgbcjdccndnaejkgcoiojchp)
+
 **Chrome Extension ID**: iacadekapgbcjdccndnaejkgcoiojchp
+
 
 ---
 
@@ -24,6 +27,18 @@ A marketing tool for getting a quick health check of a url with in one of your G
 
 ----
 
+## Installing This Extension
+
+You will need a Google account attached to a [Google Analytics profile](www.google.com/analytics/) and a [API project](https://code.google.com/apis/console/). Once you have your API project you will need to activate the Analytics v3 service and creates a API access key. You will need to create a `config.js` file which should contain your API Key and ClientID in this javascript;
+
+    var config = {
+        clientId: "X0X0X0X0X0.apps.googleusercontent.com",
+        apiKey: "X0X0X0X0X0X0X0X0X0X0X0X0",
+        scope: "https://www.googleapis.com/auth/analytics.readonly"
+    };
+
+
+----
 
 ### Feature Wish List
 
@@ -58,11 +73,11 @@ A marketing tool for getting a quick health check of a url with in one of your G
 
 ### Release Notes
 
-
 #### v0.4.x
 
-- Adding new icons for Chrome web store: 0.4.2
-- Fixing manifest versioning: 0.4.1
+- *0.4.3*: Renaming extension
+- *0.4.2*: Adding new icons for Chrome web store
+- *0.4.1*: Fixing manifest versioning
 - Added date range picker feature
 - refactored `popup.js` to a moduel pattern
 - Fixed re-authorize not appearing when a query returns a 401 error.

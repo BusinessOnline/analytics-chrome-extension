@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
 "name": "SEO Page Metrics",
-"version": "0.4.2",
+"version": "0.4.3",
 "description": "Marketing tool which shows a health check of the current page metrics",
 "page_action": {
 "default_icon": {
