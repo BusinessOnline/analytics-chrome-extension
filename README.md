@@ -3,7 +3,7 @@ Marketing Health Check
 
 A marketing tool for getting a quick health check of a url with in one of your Google Analytics accounts. Displays basic page analytics, SEO and PPC metrics.
 
-**Chrome Extension ID**: iibnddnkildmlealkiojoekjhlgdikpd
+**Chrome Extension ID**: iacadekapgbcjdccndnaejkgcoiojchp
 
 ---
 
@@ -12,7 +12,7 @@ A marketing tool for getting a quick health check of a url with in one of your G
 - Average Time on page
 - Page Views
 - Bounce Rate
- 
+
 ## PPC Metrics
 
 - Can I show conversion?
@@ -29,13 +29,13 @@ A marketing tool for getting a quick health check of a url with in one of your G
 
 - Page action badge showing data is available.
 - Message passing for notifying when metrics are available for current page
-- Date picker to set `start-date` and `end-date` query parameters
+- ~~Date picker to set `start-date` and `end-date` query parameters~~
 
 
 ### Bugz
 
 - After loading a pageAction changing tabs keeps the old tab data
-- If the token expires and the extension hasn't been reloaded then the re-authorize button doesn't appear.
+- ~~If the token expires and the extension hasn't been reloaded then the re-authorize button doesn't appear.~~
 - After loading a profile with data when a new profile is loaded that doesn't contain data the metrics remain from the old profile.
 
 
@@ -57,6 +57,13 @@ A marketing tool for getting a quick health check of a url with in one of your G
 
 
 ### Release Notes
+
+#### v0.0.4
+
+- Added date range picker feature
+- refactored `popup.js` to a moduel pattern
+- Fixed re-authorize not appearing when a query returns a 401 error.
+- Removed Zeptojs library dependency
 
 #### v0.0.3
 
