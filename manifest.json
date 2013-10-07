@@ -1,8 +1,8 @@
 {
 "manifest_version": 2,
-"name": "Analytics Preview",
+"name": "SEO Page Metrics",
 "version": "0.4.2",
-"description": "Marketing tool that shows a health check of the current url. Shows basic page analytics, SEO and PPC metrics.",
+"description": "Marketing tool which shows a health check of the current page metrics",
 "page_action": {
 "default_icon": {
 "19": "icon_19.png",
