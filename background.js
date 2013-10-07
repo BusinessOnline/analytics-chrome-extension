@@ -12,7 +12,7 @@
 
 var ext = {
     auth: {},
-    debug: true,
+    debug: false,
     resp: {},
     profiles: [],
     profileNameOptions: "",
@@ -154,27 +154,37 @@ var ext = {
             //if(ext.debug) {ext.logArgs([Array.prototype.slice.call(arguments)], 'Background->queryRealTime: Auth Response');}
         });
     },
-    queryReporting: function (profile, metrics, dimensions, callback) {
-        if(ext.debug) {ext.logArgs([Array.prototype.slice.call(arguments)], 'Background->queryReporting: Parameters');}
 
-        // Defaults to last 30 days
-        var today = new Date();
-        var endDate = today.toISOString().split('T');
-        var past = new Date(today.setDate(today.getDate() - 30));
-        var startDate = past.toISOString().split('T');
+    /**
+     * [queryReporting description]
+     * @param  {[type]}   profile    [description]
+     * @param  {[type]}   metrics    [description]
+     * @param  {[type]}   dimensions [description]
+     * @param  {Function} callback   [description]
+     * @return {[type]}              [description]
+     */
+    queryReporting: function (profile, dimensions, metrics, startDate, endDate, callback) {
+        if(ext.debug) {ext.logArgs([Array.prototype.slice.call(arguments)], 'Background->queryReporting: Parameters');}
 
         gapi.client.analytics.data.ga.get({
             'ids': profile,
-            'start-date': startDate[0],
-            'end-date': endDate[0],
+            'start-date': startDate,
+            'end-date': endDate,
             'metrics': metrics,
-            'dimensions': dimensions
+            'dimensions': dimensions,
+            'max-results': 10000
         }).execute(function (resp) {
             //if(ext.debug) {ext.logArgs([Array.prototype.slice.call(arguments)], 'Background->queryReporting: Auth Response');}
             callback(resp);
         });
 
     },
+
+    /**
+     * [logArgs description]
+     * @param  {[type]} param [description]
+     * @param  {[type]} name  [description]
+     */
     logArgs: function (param, name) {
         console.log('START: '+ name);
         for (var i = 0, l = param[0].length; i < l; i++) {
@@ -203,7 +213,13 @@ function gapiIsLoaded () {
 }
 
 
-// Called when the url of a tab changes.
+/**
+ * checkForValidUrl Checks if current tab url matches a profile websiteUrl to determine if pageAction should be shown.
+ * @param  {[type]} tabId      [description]
+ * @param  {[type]} changeInfo [description]
+ * @param  {[type]} tab        [description]
+ * @see http://developer.chrome.com/extensions/tabs.html#event-onUpdated
+ */
 function checkForValidUrl(tabId, changeInfo, tab) {
 
     //Show page action if not authed
@@ -234,5 +250,8 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 }
 
 
-// Listen for any changes to the URL of any tab.
+/**
+ * Display pageAction if user account has access to
+ * the current tab domains analytics
+ */
 chrome.tabs.onUpdated.addListener(checkForValidUrl);

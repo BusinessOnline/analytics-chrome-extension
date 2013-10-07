@@ -11,52 +11,40 @@
             min-width: 250px;
             padding: 0
         }
-        #app header {
-            border-bottom: 1px dashed #AAA;
-            margin: 0 0 10px 0;
-            padding: 10px;
-        }
-        #app header h1 {
-            font-size: 14px;
-            line-height: 16px;
-            margin: 0;
-            padding: 0;
-        }
-
         #app section {
             margin: 0 15px;
             padding: 10px 0;
         }
 
-        label {
-            font-size: 14px;
-            font-weight: bold;
-        }
-        #webPropertyId {
-            margin: 0;
-            padding: 0;
-        }
 
         #seo {
-            margin: 0;
-            padding: 15px 0 5px;
+            border-top: 1px dashed #AAA;
+            margin: 20px 0 0 0;
+            padding: 10px 0;
         }
         #seo h2 {
             font-size: 14px;
+            margin: 0 0 10px 0;
+            padding: 0;
         }
         #seo-metrics {
-            margin: 0 0 0 18px;
+            margin: 0;
             padding: 0;
         }
         #seo .metric {
-            margin: 10px 0;
+            margin: 0 0 10px 0;
             font-size: 16px;
             font-weight: 900;
+            list-style: none;
+        }
+        #seo .metric:last-child {
+            margin: 0;
         }
         #seo .metric .title {
             font-size: 14px;
             font-style: italic;
             font-weight: 500;
+            margin: 0 3px 0 0;
         }
 
         #authorize-button {
@@ -74,7 +62,7 @@
         footer {
             background-color: #EEE;
             font-size: 12px;
-            margin: 5px 0 0 0;
+            margin: 0;
             padding: 0 5px;
             width: 100%;
         }
@@ -82,29 +70,68 @@
             color: #333;
         }
 
+
+        input,
+        select,
+        option {
+            height: 20px;
+            width: 100%;
+        }
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            width: 60px;
+            display: block;
+            float: left;
+            height: 20px;
+            line-height: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        #properties select,
+        #time input {
+            width: 70%;
+        }
+
+        #properties,
+        #startDate {
+            height: 20px;
+            margin: 0 0 10px 0;
+            padding: 0;
+            line-height: 20px;
+            vertical-align: middle;
+        }
+
+
     </style>
 </head>
 <body id="app">
 
-    <header>
+    <!-- <header>
         <h1>Page Level Metrics</h1>
         <small>* Last 30 days</small>
-    </header>
+    </header> -->
 
     <section>
 
-        <label for="webPropertyId">
-            <span class="title">Profile</span>
+        <div id="properties">
+            <label for="webPropertyId" class="title">Profile:</label>
             <select name="webPropertyId" id="webPropertyId">
                 <option value="">Web Property</option>
             </select>
-        </label>
+        </div>
 
-        <!-- <label for="startDate">
-            <span class="title">Select Date Range:</span>
-            <input type="date" name="from" id="startDate">
-            <input type="date" name="to" id="endDate">
-        </label> -->
+        <div id="time">
+            <div id="startDate">
+                <label for="start">Start:</label>
+                <input type="date" name="start" id="start">
+            </div>
+            <div id="endDate">
+                <label for="end">End:</label>
+                <input type="date" name="end" id="end">
+            </div>
+            <!-- <a href="Javascript://">GO</a> -->
+        </div>
 
         <div id="seo">
             <h2>SEO Metrics:</h2>
@@ -121,7 +148,7 @@
     </footer>
 
 
-<script src="zepto.min.js"></script>
+<!-- <script src="zepto.min.js"></script> -->
 <script src="popup.js"></script>
 
 </body>

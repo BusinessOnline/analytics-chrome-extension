@@ -7,106 +7,128 @@
  */
 
 var bgPage = chrome.extension.getBackgroundPage();
+var popup = (function(){
 
-if (!bgPage.ext.auth || bgPage.ext.auth.code === 401) {
-    var authorizeButton = document.getElementById('authorize-button');
-    authorizeButton.style.display = 'block';
-    authorizeButton.onclick = bgPage.ext.authClick;
-} else {
+    var linkObj;
+    var startDate;
+    var endDate;
 
-    // Authed and ready!
-    chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function(tabs) {
-         // since only one tab should be active and in the current window at once
-         // the return variable should only have one entry
-        var url = tabs[0].url;
-        var l = getLocation(url);
+    function _handleUrl (url) {
+        linkObj = _getLinkObj(url);
 
-        // Add onchange to re-lookup data when different profile file selected
+        // Setup profile selection
         var select = document.getElementById('webPropertyId');
-        select.innerHTML = bgPage.ext.profileNameOptions;
-        select.addEventListener('change', function (e) {
-            var id = e.target.value;
-            loadProfile(id, l);
+              select.innerHTML = bgPage.ext.profileNameOptions;
+              select.addEventListener('change', function (e) {
+                   var id = e.target.value;
+                   _loadProfile(id);
+               });
+
+        // Add Date picker eventlisteners
+        document.getElementById('start').addEventListener('focusout', function (e) {
+            startDate = e.target.value;
+            _loadProfile(document.getElementById('webPropertyId').value);
+        });
+        document.getElementById('end').addEventListener('focusout', function (e) {
+            endDate = e.target.value;
+            _loadProfile(document.getElementById('webPropertyId').value);
         });
 
-        // Do initial profile lookup
-        loadProfile($(select)[0][0].value, l);
+        // Initial profile lookup
+        _loadProfile(select.options[0].value);
+    }
 
-    });
-}
+    function _loadProfile (id) {
+        if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->loadProfile: Parameters');}
 
-/**
- * [loadProfile description]
- * @param  {[type]} id [description]
- * @param  {[type]} l  [description]
- */
-function loadProfile (id, l) {
-    if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->loadProfile: Parameters');}
+        // pagePath dimension constrains query to a specific page.
+        var profile = "ga:" + id,
+              metrics = "ga:pageviews,ga:entrances,ga:bounces,ga:avgTimeOnPage",
+              dimensions = "ga:pagePath";
 
-    // pagePath dimension constrains query to a specific page.
-    var profile = "ga:" + id;
-    var metrics = "ga:pageviews,ga:entrances,ga:bounces,ga:avgTimeOnPage";
-    var dimensions = "ga:pagePath";
+        if (!startDate || !endDate) {
+            // Default to last 30 days
+            var today = new Date();
+                  endDate = today.toISOString().split('T')[0];
+            var past = new Date(today.setDate(today.getDate() - 30));
+                  startDate = past.toISOString().split('T')[0];
+        }
 
-    bgPage.ext.queryReporting(profile, metrics, dimensions, function (resp) {
-        matchPath(resp, l);
-    });
-}
+        bgPage.ext.queryReporting(profile, dimensions, metrics, startDate, endDate, function (resp) {
+            if (resp && !resp.error) {
+                _matchPath(resp);
+            } else if (resp.error.code === 401) {
+                _getAuth();
+            }
+        });
+    }
 
+    function _matchPath (resp) {
+        if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->matchPath: Parameters');}
 
-/**
- * [matchPath description]
- * @param  {[type]} data [description]
- * @param  {[type]} l    [description]
- */
-function matchPath (data, l) {
-    if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->matchPath: Parameters');}
-    var path = l.pathname;
-    for (var i = 0; i < data.rows.length; i++) {
-        if (path === data.rows[i][0]) {
-            displayMetrics(data.columnHeaders, data.rows[i]);
+        var path = linkObj.pathname;
+        for (var i = 0; i < resp.rows.length; i++) {
+            if (path === resp.rows[i][0]) {
+                _displayMetrics(resp.rows[i]);
+            }
         }
     }
-}
 
-/**
- * [displayMetrics description]
- * @param  {[type]} headers [description]
- * @param  {[type]} data    [description]
- * @return {[type]}         [description]
- */
-function displayMetrics (headers, data) {
-     if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->displayMetrics: Parameters');}
+    function _displayMetrics (row) {
+        if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->displayMetrics: Parameters');}
 
-    // Profile info
-    //document.getElementById('webPropertyId').innerHTML = data.profileInfo.webPropertyId;
-    //document.getElementById('profileName').innerHTML = data.profileInfo.profileName;
+        var pageViews = row[1],
+              bounceRate = function() {
+                    // Prevent infinity zero division
+                    if(row[3] !== 0) {
+                        return Math.round((row[2] / row[3]) * 100) / 100;
+                    }
+                    return 0;
+               },
+               avgTimeOnPage = Math.round(row[4] * 100) / 100;
 
-    var pageViews = data[1];
-    var bounceRate = function() {
-        // Prevent infinity zero division
-        if(!data[3] === 0) {
-            return Math.round((data[2] / data[3]) * 100) / 100;
-        }
-        return 0;
+        // Metrics
+        var html = "<li class='metric'><span class='title'>Page Views: </span>"+pageViews+"</li>" +
+                         "<li class='metric'><span class='title'>Bounce Rate: </span>"+bounceRate()+"%</li>" +
+                         "<li class='metric'><span class='title'>Avg. Time on Page: </span>"+avgTimeOnPage+" seconds</li>";
+
+        document.getElementById('seo-metrics').innerHTML = html;
+    }
+
+    /**
+     * _getLinkObj
+     * @param  {String} url
+     * @return {Object} a Returns an Anchor tag DOM element object
+     */
+    function _getLinkObj (url) {
+        var a = document.createElement("a");
+        a.href = url;
+        return a;
+    }
+
+    /**
+     * _getAuth Shows authorization button
+     */
+    function _getAuth () {
+        var authorizeButton = document.getElementById('authorize-button');
+        authorizeButton.style.display = 'block';
+        authorizeButton.onclick = bgPage.ext.authClick;
+    }
+
+    return {
+        handleUrl: _handleUrl
     };
-    var avgTimeOnPage = Math.round(data[4] * 100) / 100;
 
-    // Metrics
-    var html = "<li class='metric'><span class='title'>Page Views: </span>"+pageViews+"</li>" +
-                     "<li class='metric'><span class='title'>Bounce Rate: </span>"+bounceRate()+"%</li>" +
-                     "<li class='metric'><span class='title'>Avg. Time on Page: </span>"+avgTimeOnPage+" seconds</li>";
-    document.getElementById('seo-metrics').innerHTML = html;
-}
+}(bgPage));
 
-/**
- * [getLocation description]
- * @param  {[type]} href [description]
- * @return {[type]}      [description]
- */
-function getLocation (href) {
-    var l = document.createElement("a");
-    l.href = href;
-    return l;
+
+// Check auth
+if (!bgPage.ext.auth) {
+    popup.getAuth();
+} else {
+    // Get active tab URL
+    chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function(tabs) {
+        popup.handleUrl(tabs[0].url);
+    });
 }
 
