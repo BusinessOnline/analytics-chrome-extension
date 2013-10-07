@@ -58,8 +58,11 @@ A marketing tool for getting a quick health check of a url with in one of your G
 
 ### Release Notes
 
-#### v0.0.4
 
+#### v0.4.x
+
+- Adding new icons for Chrome web store: 0.4.2
+- Fixing manifest versioning: 0.4.1
 - Added date range picker feature
 - refactored `popup.js` to a moduel pattern
 - Fixed re-authorize not appearing when a query returns a 401 error.

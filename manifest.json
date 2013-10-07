@@ -1,18 +1,24 @@
 {
 "manifest_version": 2,
 "name": "Analytics Preview",
-"version": "0.0.4",
+"version": "0.4.2",
 "description": "Marketing tool that shows a health check of the current url. Shows basic page analytics, SEO and PPC metrics.",
 "page_action": {
 "default_icon": {
 "19": "icon_19.png",
-"38": "icon_38.png"
+"38": "icon_38.png",
+"128": "icon_128.png"
 },
 "default_title": "Page Analytics",
 "default_popup": "popup.html"
 },
 "background": {
 "page": "background.html"
+},
+"icons": {
+"19": "icon_19.png",
+"48": "icon_48.png",
+"128": "icon_128.png"
 },
 "permissions": [
 "tabs",
