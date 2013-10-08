@@ -66,11 +66,20 @@ var popup = (function(){
     function _matchPath (resp) {
         if(bgPage.ext.debug) {bgPage.ext.logArgs([Array.prototype.slice.call(arguments)], 'Popup->matchPath: Parameters');}
 
-        var path = linkObj.pathname;
-        for (var i = 0; i < resp.rows.length; i++) {
-            if (path === resp.rows[i][0]) {
-                _displayMetrics(resp.rows[i]);
+        // Make sure there is data first
+        if (resp.hasOwnProperty('rows')) {
+            var path = linkObj.pathname;
+            for (var i = 0; i < resp.rows.length; i++) {
+                //Check if current url matches one in profile
+                if (path === resp.rows[i][0]) {
+                    _displayMetrics(resp.rows[i]);
+                    break;
+                } else {
+                    document.getElementById('seo-metrics').innerHTML = "No Data Found";
+                }
             }
+        } else {
+            document.getElementById('seo-metrics').innerHTML = "No Data Found";
         }
     }
 

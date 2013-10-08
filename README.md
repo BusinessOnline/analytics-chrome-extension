@@ -51,7 +51,7 @@ You will need a Google account attached to a [Google Analytics profile](www.goog
 
 - After loading a pageAction changing tabs keeps the old tab data
 - ~~If the token expires and the extension hasn't been reloaded then the re-authorize button doesn't appear.~~
-- After loading a profile with data when a new profile is loaded that doesn't contain data the metrics remain from the old profile.
+- ~~After loading a profile with data when a new profile is loaded that doesn't contain data the metrics remain from the old profile.~~
 
 
 ### Resources
@@ -75,6 +75,7 @@ You will need a Google account attached to a [Google Analytics profile](www.goog
 
 #### v0.4.x
 
+- *0.4.4*: Extension now shows "loading..." and "no data found" states
 - *0.4.3*: Renaming extension
 - *0.4.2*: Adding new icons for Chrome web store
 - *0.4.1*: Fixing manifest versioning
