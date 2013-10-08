@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
 "name": "SEO Page Metrics",
-"version": "0.4.3",
+"version": "0.4.4",
 "description": "Shows current page SEO metrics.",
 "page_action": {
 "default_icon": {
